@@ -31,6 +31,7 @@ text {
 <script src="src/utils.js"></script>
 <script src="examples/stream_layers.js"></script>
 
+
 <script>
 
   var test_data = stream_layers(3,128,.1).map(function(data, i) {
@@ -42,16 +43,20 @@ text {
 
 nv.addGraph({
   generate: function() {
-      var width = nv.utils.windowSize().width - 40,
+	  var width = nv.utils.windowSize().width - 40,
       height = nv.utils.windowSize().height - 40;
 
-      var chart = nv.models.multiBar()
+      var chart = nv.models.multiBarChart()
                 .width(width)
                 .height(height)
-                .stacked(true)
-
-
-    var svg = d3.select('#test1 svg')
+		        .transitionDuration(350)
+		        .reduceXTicks(true)   //If 'false', every single x-axis tick label will be rendered.
+		        .rotateLabels(0)      //Angle to rotate x-axis labels.
+		        .showControls(true)   //Allow user to switch between 'Grouped' and 'Stacked' mode.
+		        .groupSpacing(0.1)    //Distance between each group of bars.
+				;
+				
+	var svg = d3.select('#test1 svg')
       .attr('width', width)
       .attr('height', height)
       .datum(test_data);
@@ -60,8 +65,8 @@ nv.addGraph({
 
     return chart;
   },
+  
   callback: function(graph) {
-
 
     window.onresize = function() {
     var width = nv.utils.windowSize().width - 40,
